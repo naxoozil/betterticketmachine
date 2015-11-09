@@ -17,17 +17,22 @@ public class TicketMachine
     private int balance;
     // The total amount of money collected by this machine.
     private int total;
+    // A discount in the price of the tickets
+    private boolean discount;
+    
+    private int descuento;
 
     /**
      * Create a machine that issues tickets of the given price.
      */
-    public TicketMachine(int cost)
-    {
-        price = cost;
+    public TicketMachine(int cost,boolean disc, int desc)
+    {   price = cost;
         balance = 0;
         total = 0;
+        discount = disc;
+        descuento = desc;
     }
-
+    
     /**
      * @Return The price of a ticket.
      */
@@ -60,55 +65,74 @@ public class TicketMachine
         }
     }
 
-    /**
-     * Print a ticket if enough money has been inserted, and
-     * reduce the current balance by the ticket price. Print
-     * an error message if more money is required.
-     */
-    public void printTicket()
-    {
-        if(balance >= price) {
-            // Simulate the printing of a ticket.
-            System.out.println("##################");
-            System.out.println("# The BlueJ Line");
-            System.out.println("# Ticket");
-            System.out.println("# " + price + " cents.");
-            System.out.println("##################");
-            System.out.println();
+   /**
+   * Print a ticket if enough money has been inserted, and
+   * reduce the current balance by the ticket price. Print
+   * an error message if more money is required.
+   */
+   public void printTicket()
+   {
+       if(balance >= price) {
+           // Simulate the printing of a ticket.
+           System.out.println("##################");
+           System.out.println("# The BlueJ Line");
+           System.out.println("# Ticket");
+           System.out.println("# " + price + " cents.");
+           System.out.println("##################");
+           System.out.println();
 
-            // Update the total collected with the price.
-            total = total + price;
-            // Reduce the balance by the prince.
-            balance = balance - price;
-        }
-        else {
-           int amountLeftToPay = price - balance;
-           System.out.println("You have to pay " + amountLeftToPay + " € more for printing the ticket");     
-        }
-    }
+           // Update the total collected with the price.
+           total = total + price;
+           // Reduce the balance by the prince.
+           balance = balance - price;
+       }
+       else {
+          int amountLeftToPay = price - balance;
+          System.out.println("You have to pay " + amountLeftToPay + " € more for printing the ticket");     
+       }
+   }
 
-    /**
+   /**
      * Return the money in the balance.
      * The balance is cleared.
      */
-    public int refundBalance()
-    {
-        int amountToRefund;
-        amountToRefund = balance;
-        balance = 0;
-        return amountToRefund;
-    }
+   public int refundBalance()
+   {
+       int amountToRefund;
+       amountToRefund = balance;
+       balance = 0;
+       return amountToRefund;
+   }
     
     /**
      * Empties the machine from the money
      * The balance is cleared
      * The total is cleared
-     */public int emptyMachine()
+     */
+    public int emptyMachine()
     {
-        int allMoney;
-        allMoney = total + balance;
-        total = 0;
-        balance = 0;
+        if (balance ==0) {
+            int allMoney = total;
+            total = 0;
+            return allMoney;
+     }
+     else {
+        int allMoney = total;
         return allMoney;
-    }    
+     }    
+   }
+   
+   /**
+    * Gets tickets with discount
+    */
+   public void printTicketWithDiscount()
+   {
+       int priceWithDiscount = price - ((price * descuento) / 100);
+        if(discount == true){
+           System.out.println("The price of the ticket with a discount is " + priceWithDiscount);
+   }
+   else {
+       System.out.println("We don't have discounts in the price of the tickets. The normal price is " + price);
+   }
+   }
 }
